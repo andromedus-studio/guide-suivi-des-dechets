@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Calendrier 2026-2027 — Fianchetto du Roi, Rosporden</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board-dark:#1f2e23;
+    --ivory:#f1ecdd;
+    --ivory-2:#e7dfc9;
+    --burgundy:#7a2e2e;
+    --gold:#c9a227;
+    --ink:#26241d;
+    --line:rgba(31,46,35,0.18);
+    --green:#3d5a4a;
+
+    --teams-tint:#e7e2d3;
+    --teams-line:#1f2e23;
+    --club-tint:#f3e2e2;
+    --club-line:#7a2e2e;
+    --bar-tint:#f6edcf;
+    --bar-line:#8a6a1f;
+    --local-tint:#e2ecE5;
+    --local-line:#3d5a4a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:'EB Garamond', serif;
+    font-size:17px;
+    line-height:1.4;
+  }
+  .page{ max-width:1180px; margin:0 auto; padding:0 24px 90px; }
+
+  header.hero{
+    position:relative;
+    padding:64px 24px 48px;
+    margin:0 0 8px;
+    background: var(--board-dark);
+    color:var(--ivory);
+    overflow:hidden;
+    text-align:center;
+  }
+  header.hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(45deg, rgba(241,236,221,0.035) 25%, transparent 25%, transparent 75%, rgba(241,236,221,0.035) 75%),
+      linear-gradient(45deg, rgba(241,236,221,0.035) 25%, transparent 25%, transparent 75%, rgba(241,236,221,0.035) 75%);
+    background-size:96px 96px;
+    background-position:0 0, 48px 48px;
+    pointer-events:none;
+  }
+  .eyebrow{
+    position:relative; font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.28em; text-transform:uppercase; font-size:12px;
+    color:var(--gold); margin-bottom:16px;
+  }
+  h1.club-name{
+    position:relative; font-family:'Cormorant Garamond', serif;
+    font-weight:700; font-size:clamp(34px, 5.5vw, 58px);
+    line-height:1.05; margin:0 0 8px;
+  }
+  h1.club-name em{ font-style:italic; color:var(--gold); font-weight:600; }
+  .place{ position:relative; font-family:'Cormorant Garamond', serif; font-style:italic; font-size:19px; color:var(--ivory-2); margin:0 0 24px; }
+
+  .legend{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:18px;
+    position:relative; font-family:'JetBrains Mono', monospace; font-size:11.5px;
+    letter-spacing:0.05em; text-transform:uppercase; color:var(--ivory-2);
+  }
+  .legend .dot{ display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:middle; }
+  .dot-teams{ background:var(--gold); }
+  .dot-club{ background:#c96b6b; }
+  .dot-bar{ background:#d9c26a; }
+  .dot-local{ background:#6fa088; }
+
+  .months-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:36px;
+    margin-top:40px;
+  }
+  @media(min-width:720px){
+    .months-grid{ grid-template-columns:1fr 1fr; }
+  }
+  @media(min-width:1080px){
+    .months-grid{ grid-template-columns:1fr 1fr 1fr; }
+  }
+
+  .month{
+    background:#fffdf7;
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:18px 18px 16px;
+    box-shadow:0 1px 0 rgba(0,0,0,0.03);
+  }
+  .month-head h2{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:700; font-size:22px; margin:0 0 12px;
+    color:var(--ink);
+    border-bottom:2px solid var(--board-dark);
+    padding-bottom:8px;
+  }
+  .month-head .year{ color:#8a6a1f; font-weight:600; }
+
+  .weekdays{
+    display:grid; grid-template-columns:repeat(7,1fr);
+    font-family:'JetBrains Mono', monospace;
+    font-size:9.5px; letter-spacing:0.05em; text-transform:uppercase;
+    color:#6b6250; margin-bottom:4px;
+  }
+  .weekdays .wd{ text-align:center; padding:2px 0; }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(7,1fr);
+    gap:3px;
+  }
+  .cell{
+    position:relative;
+    min-height:40px;
+    border:1px solid var(--line);
+    border-radius:1px;
+    padding:3px 4px;
+    background:#fff;
+    color:var(--ink);
+  }
+  .cell.blank{ border-color:transparent; background:transparent; }
+  .cell.weekend:not(.blank){ background:#faf6ea; }
+  .daynum{ font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:600; color:var(--ink); }
+  .ev-tag{
+    display:block;
+    font-family:'EB Garamond', serif;
+    font-weight:600;
+    font-size:10.5px;
+    line-height:1.15;
+    margin-top:2px;
+    color:var(--ink);
+  }
+
+  /* evenements : fond clair teinte + bordure gauche coloree + texte noir, lisible a l'impression N&B */
+  .cell.has-event{ border-left-width:4px; padding-left:6px; }
+  .cell.event-teams{ background:var(--teams-tint); border-left-color:var(--teams-line); }
+  .cell.event-club{ background:var(--club-tint); border-left-color:var(--club-line); }
+  .cell.event-local{ background:var(--local-tint); border-left-color:var(--local-line); }
+
+  .month-banner{
+    margin-top:12px;
+    padding:8px 12px;
+    border-radius:3px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.03em;
+    display:flex; align-items:center; gap:8px;
+    color:var(--ink);
+    font-weight:600;
+  }
+  .banner-dot{ width:8px; height:8px; border-radius:50%; flex:0 0 auto; }
+  .banner-sub{ opacity:0.7; font-style:italic; text-transform:none; margin-left:4px; font-weight:400; }
+  .banner-club{ background:var(--club-tint); border-left:4px solid var(--club-line); }
+  .banner-bar{ background:var(--bar-tint); border-left:4px solid var(--bar-line); }
+  .banner-club .banner-dot{ background:var(--club-line); }
+  .banner-bar .banner-dot{ background:var(--bar-line); }
+
+  footer{
+    margin-top:64px; text-align:center;
+    font-family:'JetBrains Mono', monospace; font-size:11px;
+    letter-spacing:0.12em; text-transform:uppercase; color:#8a8264;
+  }
+  footer .diag{
+    display:inline-block; width:16px;height:16px;
+    border:2px solid var(--gold); transform:rotate(45deg); margin-bottom:14px;
+  }
+
+  @media print{
+    body{background:white;}
+    header.hero{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .cell, .month-banner{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .months-grid{ grid-template-columns:1fr 1fr; }
+    .month{ break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Saison 2026 – 2027</div>
+  <h1 class="club-name">Fianchetto <em>du Roi</em></h1>
+  <p class="place">Club d'échecs · Rosporden</p>
+  <div class="legend">
+    <span><span class="dot dot-teams"></span>Championnats R1/D2</span>
+    <span><span class="dot dot-club"></span>Tournois &amp; animations du club</span>
+    <span><span class="dot dot-bar"></span>Séries au bar Trimartolod</span>
+    <span><span class="dot dot-local"></span>Vie locale &amp; associative</span>
+  </div>
+</header>
+
+<div class="page">
+  <div class="months-grid">
+    
+    <section class="month">
+      <div class="month-head">
+        <h2>Septembre <span class="year">2026</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell"><span class="daynum">3</span></div><div class="cell"><span class="daynum">4</span></div><div class="cell event-local has-event weekend"><span class="daynum">5</span><span class="ev-tag">Forum des associations de Rosporden</span></div><div class="cell weekend"><span class="daynum">6</span></div><div class="cell"><span class="daynum">7</span></div><div class="cell"><span class="daynum">8</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell"><span class="daynum">10</span></div><div class="cell"><span class="daynum">11</span></div><div class="cell weekend"><span class="daynum">12</span></div><div class="cell weekend"><span class="daynum">13</span></div><div class="cell"><span class="daynum">14</span></div><div class="cell"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell"><span class="daynum">17</span></div><div class="cell"><span class="daynum">18</span></div><div class="cell event-local has-event weekend"><span class="daynum">19</span><span class="ev-tag">Fête des jeux — Centre social</span></div><div class="cell weekend"><span class="daynum">20</span></div><div class="cell"><span class="daynum">21</span></div><div class="cell"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell"><span class="daynum">24</span></div><div class="cell"><span class="daynum">25</span></div><div class="cell weekend"><span class="daynum">26</span></div><div class="cell weekend"><span class="daynum">27</span></div><div class="cell"><span class="daynum">28</span></div><div class="cell"><span class="daynum">29</span></div><div class="cell"><span class="daynum">30</span></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div></div>
+      
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Octobre <span class="year">2026</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell weekend"><span class="daynum">3</span></div><div class="cell weekend"><span class="daynum">4</span></div><div class="cell"><span class="daynum">5</span></div><div class="cell"><span class="daynum">6</span></div><div class="cell"><span class="daynum">7</span></div><div class="cell"><span class="daynum">8</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell weekend"><span class="daynum">10</span></div><div class="cell event-teams has-event weekend"><span class="daynum">11</span><span class="ev-tag">Championnat R1/D2</span></div><div class="cell"><span class="daynum">12</span></div><div class="cell"><span class="daynum">13</span></div><div class="cell"><span class="daynum">14</span></div><div class="cell"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell weekend"><span class="daynum">17</span></div><div class="cell weekend"><span class="daynum">18</span></div><div class="cell"><span class="daynum">19</span></div><div class="cell"><span class="daynum">20</span></div><div class="cell"><span class="daynum">21</span></div><div class="cell"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell weekend"><span class="daynum">24</span></div><div class="cell weekend"><span class="daynum">25</span></div><div class="cell"><span class="daynum">26</span></div><div class="cell"><span class="daynum">27</span></div><div class="cell"><span class="daynum">28</span></div><div class="cell"><span class="daynum">29</span></div><div class="cell"><span class="daynum">30</span></div><div class="cell weekend"><span class="daynum">31</span></div><div class="cell blank"></div></div>
+      
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Novembre <span class="year">2026</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell weekend"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell"><span class="daynum">3</span></div><div class="cell"><span class="daynum">4</span></div><div class="cell"><span class="daynum">5</span></div><div class="cell"><span class="daynum">6</span></div><div class="cell weekend"><span class="daynum">7</span></div><div class="cell event-teams has-event weekend"><span class="daynum">8</span><span class="ev-tag">Championnat R1/D2</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell"><span class="daynum">10</span></div><div class="cell"><span class="daynum">11</span></div><div class="cell"><span class="daynum">12</span></div><div class="cell"><span class="daynum">13</span></div><div class="cell weekend"><span class="daynum">14</span></div><div class="cell weekend"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell"><span class="daynum">17</span></div><div class="cell"><span class="daynum">18</span></div><div class="cell"><span class="daynum">19</span></div><div class="cell"><span class="daynum">20</span></div><div class="cell weekend"><span class="daynum">21</span></div><div class="cell weekend"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell"><span class="daynum">24</span></div><div class="cell"><span class="daynum">25</span></div><div class="cell"><span class="daynum">26</span></div><div class="cell"><span class="daynum">27</span></div><div class="cell weekend"><span class="daynum">28</span></div><div class="cell event-teams has-event weekend"><span class="daynum">29</span><span class="ev-tag">Championnat R1/D2</span></div><div class="cell"><span class="daynum">30</span></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div></div>
+      <div class="month-banner banner-club"><span class="banner-dot"></span>Coupe Loubatière <span class="banner-sub">— tout le mois</span></div>
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Décembre <span class="year">2026</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell"><span class="daynum">3</span></div><div class="cell"><span class="daynum">4</span></div><div class="cell weekend"><span class="daynum">5</span></div><div class="cell weekend"><span class="daynum">6</span></div><div class="cell"><span class="daynum">7</span></div><div class="cell"><span class="daynum">8</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell"><span class="daynum">10</span></div><div class="cell"><span class="daynum">11</span></div><div class="cell weekend"><span class="daynum">12</span></div><div class="cell event-teams has-event weekend"><span class="daynum">13</span><span class="ev-tag">Championnat R1/D2</span></div><div class="cell"><span class="daynum">14</span></div><div class="cell"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell"><span class="daynum">17</span></div><div class="cell"><span class="daynum">18</span></div><div class="cell weekend"><span class="daynum">19</span></div><div class="cell weekend"><span class="daynum">20</span></div><div class="cell"><span class="daynum">21</span></div><div class="cell"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell"><span class="daynum">24</span></div><div class="cell"><span class="daynum">25</span></div><div class="cell weekend"><span class="daynum">26</span></div><div class="cell weekend"><span class="daynum">27</span></div><div class="cell"><span class="daynum">28</span></div><div class="cell"><span class="daynum">29</span></div><div class="cell"><span class="daynum">30</span></div><div class="cell"><span class="daynum">31</span></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div></div>
+      
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Janvier <span class="year">2027</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell"><span class="daynum">1</span></div><div class="cell event-club has-event weekend"><span class="daynum">2</span><span class="ev-tag">Rapide du club — 3ᵉ édition</span></div><div class="cell weekend"><span class="daynum">3</span></div><div class="cell"><span class="daynum">4</span></div><div class="cell"><span class="daynum">5</span></div><div class="cell"><span class="daynum">6</span></div><div class="cell"><span class="daynum">7</span></div><div class="cell"><span class="daynum">8</span></div><div class="cell weekend"><span class="daynum">9</span></div><div class="cell weekend"><span class="daynum">10</span></div><div class="cell"><span class="daynum">11</span></div><div class="cell"><span class="daynum">12</span></div><div class="cell"><span class="daynum">13</span></div><div class="cell"><span class="daynum">14</span></div><div class="cell"><span class="daynum">15</span></div><div class="cell weekend"><span class="daynum">16</span></div><div class="cell event-teams has-event weekend"><span class="daynum">17</span><span class="ev-tag">Championnat R1/D2</span></div><div class="cell"><span class="daynum">18</span></div><div class="cell"><span class="daynum">19</span></div><div class="cell"><span class="daynum">20</span></div><div class="cell"><span class="daynum">21</span></div><div class="cell"><span class="daynum">22</span></div><div class="cell weekend"><span class="daynum">23</span></div><div class="cell weekend"><span class="daynum">24</span></div><div class="cell"><span class="daynum">25</span></div><div class="cell"><span class="daynum">26</span></div><div class="cell"><span class="daynum">27</span></div><div class="cell"><span class="daynum">28</span></div><div class="cell"><span class="daynum">29</span></div><div class="cell weekend"><span class="daynum">30</span></div><div class="cell event-teams has-event weekend"><span class="daynum">31</span><span class="ev-tag">Championnat R1/D2</span></div></div>
+      
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Février <span class="year">2027</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell"><span class="daynum">3</span></div><div class="cell"><span class="daynum">4</span></div><div class="cell"><span class="daynum">5</span></div><div class="cell weekend"><span class="daynum">6</span></div><div class="cell weekend"><span class="daynum">7</span></div><div class="cell"><span class="daynum">8</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell"><span class="daynum">10</span></div><div class="cell"><span class="daynum">11</span></div><div class="cell"><span class="daynum">12</span></div><div class="cell weekend"><span class="daynum">13</span></div><div class="cell weekend"><span class="daynum">14</span></div><div class="cell"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell"><span class="daynum">17</span></div><div class="cell"><span class="daynum">18</span></div><div class="cell"><span class="daynum">19</span></div><div class="cell weekend"><span class="daynum">20</span></div><div class="cell weekend"><span class="daynum">21</span></div><div class="cell"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell"><span class="daynum">24</span></div><div class="cell"><span class="daynum">25</span></div><div class="cell"><span class="daynum">26</span></div><div class="cell weekend"><span class="daynum">27</span></div><div class="cell weekend"><span class="daynum">28</span></div></div>
+      
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Mars <span class="year">2027</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell"><span class="daynum">3</span></div><div class="cell"><span class="daynum">4</span></div><div class="cell"><span class="daynum">5</span></div><div class="cell weekend"><span class="daynum">6</span></div><div class="cell weekend"><span class="daynum">7</span></div><div class="cell"><span class="daynum">8</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell"><span class="daynum">10</span></div><div class="cell"><span class="daynum">11</span></div><div class="cell"><span class="daynum">12</span></div><div class="cell weekend"><span class="daynum">13</span></div><div class="cell event-teams has-event weekend"><span class="daynum">14</span><span class="ev-tag">Championnat R1/D2</span></div><div class="cell"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell"><span class="daynum">17</span></div><div class="cell"><span class="daynum">18</span></div><div class="cell"><span class="daynum">19</span></div><div class="cell weekend"><span class="daynum">20</span></div><div class="cell weekend"><span class="daynum">21</span></div><div class="cell"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell"><span class="daynum">24</span></div><div class="cell"><span class="daynum">25</span></div><div class="cell"><span class="daynum">26</span></div><div class="cell weekend"><span class="daynum">27</span></div><div class="cell weekend"><span class="daynum">28</span></div><div class="cell"><span class="daynum">29</span></div><div class="cell"><span class="daynum">30</span></div><div class="cell"><span class="daynum">31</span></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div></div>
+      
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Avril <span class="year">2027</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell weekend"><span class="daynum">3</span></div><div class="cell weekend"><span class="daynum">4</span></div><div class="cell"><span class="daynum">5</span></div><div class="cell"><span class="daynum">6</span></div><div class="cell"><span class="daynum">7</span></div><div class="cell"><span class="daynum">8</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell weekend"><span class="daynum">10</span></div><div class="cell weekend"><span class="daynum">11</span></div><div class="cell"><span class="daynum">12</span></div><div class="cell"><span class="daynum">13</span></div><div class="cell"><span class="daynum">14</span></div><div class="cell"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell weekend"><span class="daynum">17</span></div><div class="cell weekend"><span class="daynum">18</span></div><div class="cell"><span class="daynum">19</span></div><div class="cell"><span class="daynum">20</span></div><div class="cell"><span class="daynum">21</span></div><div class="cell"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell weekend"><span class="daynum">24</span></div><div class="cell weekend"><span class="daynum">25</span></div><div class="cell"><span class="daynum">26</span></div><div class="cell"><span class="daynum">27</span></div><div class="cell"><span class="daynum">28</span></div><div class="cell"><span class="daynum">29</span></div><div class="cell"><span class="daynum">30</span></div><div class="cell blank"></div><div class="cell blank"></div></div>
+      <div class="month-banner banner-bar"><span class="banner-dot"></span>Trimartolod — 6ᵉ édition <span class="banner-sub">— tout le mois</span></div>
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Mai <span class="year">2027</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell weekend"><span class="daynum">1</span></div><div class="cell weekend"><span class="daynum">2</span></div><div class="cell"><span class="daynum">3</span></div><div class="cell"><span class="daynum">4</span></div><div class="cell"><span class="daynum">5</span></div><div class="cell"><span class="daynum">6</span></div><div class="cell"><span class="daynum">7</span></div><div class="cell weekend"><span class="daynum">8</span></div><div class="cell weekend"><span class="daynum">9</span></div><div class="cell"><span class="daynum">10</span></div><div class="cell"><span class="daynum">11</span></div><div class="cell"><span class="daynum">12</span></div><div class="cell"><span class="daynum">13</span></div><div class="cell"><span class="daynum">14</span></div><div class="cell weekend"><span class="daynum">15</span></div><div class="cell weekend"><span class="daynum">16</span></div><div class="cell"><span class="daynum">17</span></div><div class="cell"><span class="daynum">18</span></div><div class="cell"><span class="daynum">19</span></div><div class="cell"><span class="daynum">20</span></div><div class="cell"><span class="daynum">21</span></div><div class="cell weekend"><span class="daynum">22</span></div><div class="cell weekend"><span class="daynum">23</span></div><div class="cell"><span class="daynum">24</span></div><div class="cell"><span class="daynum">25</span></div><div class="cell"><span class="daynum">26</span></div><div class="cell"><span class="daynum">27</span></div><div class="cell"><span class="daynum">28</span></div><div class="cell weekend"><span class="daynum">29</span></div><div class="cell weekend"><span class="daynum">30</span></div><div class="cell"><span class="daynum">31</span></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div></div>
+      <div class="month-banner banner-club"><span class="banner-dot"></span>Blitz du club <span class="banner-sub">— tout le mois</span></div>
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Juin <span class="year">2027</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell"><span class="daynum">3</span></div><div class="cell"><span class="daynum">4</span></div><div class="cell weekend"><span class="daynum">5</span></div><div class="cell weekend"><span class="daynum">6</span></div><div class="cell"><span class="daynum">7</span></div><div class="cell"><span class="daynum">8</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell"><span class="daynum">10</span></div><div class="cell"><span class="daynum">11</span></div><div class="cell weekend"><span class="daynum">12</span></div><div class="cell weekend"><span class="daynum">13</span></div><div class="cell"><span class="daynum">14</span></div><div class="cell"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell"><span class="daynum">17</span></div><div class="cell"><span class="daynum">18</span></div><div class="cell weekend"><span class="daynum">19</span></div><div class="cell weekend"><span class="daynum">20</span></div><div class="cell"><span class="daynum">21</span></div><div class="cell"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell"><span class="daynum">24</span></div><div class="cell"><span class="daynum">25</span></div><div class="cell weekend"><span class="daynum">26</span></div><div class="cell weekend"><span class="daynum">27</span></div><div class="cell"><span class="daynum">28</span></div><div class="cell"><span class="daynum">29</span></div><div class="cell"><span class="daynum">30</span></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div></div>
+      <div class="month-banner banner-bar"><span class="banner-dot"></span>Trimartolod — 7ᵉ édition <span class="banner-sub">— tout le mois</span></div>
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Juillet <span class="year">2027</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell weekend"><span class="daynum">3</span></div><div class="cell weekend"><span class="daynum">4</span></div><div class="cell"><span class="daynum">5</span></div><div class="cell"><span class="daynum">6</span></div><div class="cell"><span class="daynum">7</span></div><div class="cell"><span class="daynum">8</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell weekend"><span class="daynum">10</span></div><div class="cell weekend"><span class="daynum">11</span></div><div class="cell"><span class="daynum">12</span></div><div class="cell"><span class="daynum">13</span></div><div class="cell"><span class="daynum">14</span></div><div class="cell"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell weekend"><span class="daynum">17</span></div><div class="cell weekend"><span class="daynum">18</span></div><div class="cell"><span class="daynum">19</span></div><div class="cell"><span class="daynum">20</span></div><div class="cell"><span class="daynum">21</span></div><div class="cell"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell weekend"><span class="daynum">24</span></div><div class="cell weekend"><span class="daynum">25</span></div><div class="cell"><span class="daynum">26</span></div><div class="cell"><span class="daynum">27</span></div><div class="cell"><span class="daynum">28</span></div><div class="cell"><span class="daynum">29</span></div><div class="cell"><span class="daynum">30</span></div><div class="cell weekend"><span class="daynum">31</span></div><div class="cell blank"></div></div>
+      
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Août <span class="year">2027</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell weekend"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell"><span class="daynum">3</span></div><div class="cell"><span class="daynum">4</span></div><div class="cell"><span class="daynum">5</span></div><div class="cell"><span class="daynum">6</span></div><div class="cell weekend"><span class="daynum">7</span></div><div class="cell weekend"><span class="daynum">8</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell"><span class="daynum">10</span></div><div class="cell"><span class="daynum">11</span></div><div class="cell"><span class="daynum">12</span></div><div class="cell"><span class="daynum">13</span></div><div class="cell weekend"><span class="daynum">14</span></div><div class="cell weekend"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell"><span class="daynum">17</span></div><div class="cell"><span class="daynum">18</span></div><div class="cell"><span class="daynum">19</span></div><div class="cell"><span class="daynum">20</span></div><div class="cell weekend"><span class="daynum">21</span></div><div class="cell weekend"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell"><span class="daynum">24</span></div><div class="cell"><span class="daynum">25</span></div><div class="cell"><span class="daynum">26</span></div><div class="cell"><span class="daynum">27</span></div><div class="cell weekend"><span class="daynum">28</span></div><div class="cell weekend"><span class="daynum">29</span></div><div class="cell"><span class="daynum">30</span></div><div class="cell"><span class="daynum">31</span></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div></div>
+      <div class="month-banner banner-bar"><span class="banner-dot"></span>Trimartolod — 8ᵉ édition <span class="banner-sub">— tout le mois</span></div>
+    </section>
+    
+
+    <section class="month">
+      <div class="month-head">
+        <h2>Septembre <span class="year">2027</span></h2>
+      </div>
+      <div class="weekdays"><div class="wd">Lun</div><div class="wd">Mar</div><div class="wd">Mer</div><div class="wd">Jeu</div><div class="wd">Ven</div><div class="wd">Sam</div><div class="wd">Dim</div></div>
+      <div class="grid"><div class="cell blank"></div><div class="cell blank"></div><div class="cell"><span class="daynum">1</span></div><div class="cell"><span class="daynum">2</span></div><div class="cell"><span class="daynum">3</span></div><div class="cell weekend"><span class="daynum">4</span></div><div class="cell weekend"><span class="daynum">5</span></div><div class="cell"><span class="daynum">6</span></div><div class="cell"><span class="daynum">7</span></div><div class="cell"><span class="daynum">8</span></div><div class="cell"><span class="daynum">9</span></div><div class="cell"><span class="daynum">10</span></div><div class="cell weekend"><span class="daynum">11</span></div><div class="cell weekend"><span class="daynum">12</span></div><div class="cell"><span class="daynum">13</span></div><div class="cell"><span class="daynum">14</span></div><div class="cell"><span class="daynum">15</span></div><div class="cell"><span class="daynum">16</span></div><div class="cell"><span class="daynum">17</span></div><div class="cell weekend"><span class="daynum">18</span></div><div class="cell weekend"><span class="daynum">19</span></div><div class="cell"><span class="daynum">20</span></div><div class="cell"><span class="daynum">21</span></div><div class="cell"><span class="daynum">22</span></div><div class="cell"><span class="daynum">23</span></div><div class="cell"><span class="daynum">24</span></div><div class="cell weekend"><span class="daynum">25</span></div><div class="cell weekend"><span class="daynum">26</span></div><div class="cell"><span class="daynum">27</span></div><div class="cell"><span class="daynum">28</span></div><div class="cell"><span class="daynum">29</span></div><div class="cell"><span class="daynum">30</span></div><div class="cell blank"></div><div class="cell blank"></div><div class="cell blank"></div></div>
+      
+    </section>
+    
+  </div>
+</div>
+
+<footer>
+  <span class="diag"></span><br>
+  Fianchetto du Roi — Rosporden
+</footer>
+
+</body>
+</html>
