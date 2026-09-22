@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste Tracker — Guide Pro & Accès</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --success-color: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.2);
+        }
+        header h1 {
+            font-size: 1.25rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .step-counter {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            box-shadow: 0 0 10px var(--accent-glow);
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 950px;
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5);
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        /* Animations fluides de transition entre les slides */
+        .slide-in-right {
+            animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .slide-in-left {
+            animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideInRight {
+            0% { opacity: 0; transform: translateX(40px) scale(0.97); }
+            100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes slideInLeft {
+            0% { opacity: 0; transform: translateX(-40px) scale(0.97); }
+            100% { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        .step-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #f59e0b;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+        }
+        p.description {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .feature-box {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 0.75rem 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        .image-container {
+            background: #000;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-height: 380px;
+            transition: transform 0.3s ease;
+        }
+        .image-container:hover {
+            transform: scale(1.01);
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            max-height: 360px;
+            object-fit: contain;
+        }
+        
+        /* Style de la page de garde / d'introduction */
+        .welcome-slide {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        .welcome-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success-color);
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .welcome-slide h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #f8fafc, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        .welcome-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            transition: transform 0.2s;
+        }
+        .welcome-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-color);
+        }
+        .welcome-card h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+        .welcome-card p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Style de la page finale */
+        .final-slide {
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+        .final-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: floatLeaf 2s ease-in-out infinite;
+        }
+        @keyframes floatLeaf {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(8deg); }
+        }
+        .link-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px dashed var(--success-color);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-top: 1.5rem;
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+            transition: background 0.3s;
+        }
+        .link-card:hover {
+            background: rgba(16, 185, 129, 0.15);
+        }
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: var(--success-color);
+            color: white;
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4);
+            transition: all 0.2s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 20px -3px rgba(16, 185, 129, 0.6);
+            opacity: 0.95;
+        }
+
+        footer {
+            padding: 1.5rem 2rem;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button.nav-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        button.nav-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        button.nav-btn:disabled {
+            background-color: var(--border-color);
+            cursor: not-allowed;
+            transform: none;
+        }
+        button.secondary {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>♻️ Waste Tracker — Guide Pro</h1>
+        <div class="step-counter" id="step-indicator">Étape 1 / 9</div>
+    </header>
+
+    <main>
+        <div class="container" id="step-content">
+            <!-- Injecté dynamiquement par JS -->
+        </div>
+    </main>
+
+    <footer>
+        <button class="nav-btn secondary" id="prev-btn" onclick="changeStep(-1)" disabled>Précédent</button>
+        <button class="nav-btn" id="next-btn" onclick="changeStep(1)">Suivant</button>
+    </footer>
+
+    <script>
+        const steps = [
+            {
+                type: "welcome",
+                tag: "Introduction",
+                title: "Waste Tracker — Suivi des Déchets",
+                subtitle: "La solution intelligente de gestion et de suivi des contenants et déchets en atelier.",
+                desc: "Waste Tracker est une application professionnelle conçue pour simplifier le suivi, le remplissage et la traçabilité des bennes et fûts au sein de vos ateliers. Ce guide interactif vous présente pas à pas l'ensemble des fonctionnalités de l'outil.",
+                cards: [
+                    { title: "🎯 Suivi en Temps Réel", text: "Visualisez instantanément le niveau de remplissage des bennes par zones (intérieur / extérieur)." },
+                    { title: "📱 Mobilité Terrain", text: "Optimisé pour une utilisation nomade sur smartphone et tablette directement depuis l'atelier." },
+                    { title: "📊 Analyse & Historique", text: "Consultez l'historique des volumes et configurez facilement vos sites et rôles utilisateurs." }
+                ]
+            },
+            {
+                type: "step",
+                tag: "Étape 01",
+                title: "Présentation des Bennes & Contenants",
+                desc: "Vue d'ensemble du tableau de bord réparti par zones (Intérieur / Extérieur). Visualisez l'état de remplissage de chaque contenant (faible, modéré, critique) en temps réel.",
+                feature: "Indicateurs visuels clairs : Chaque fût ou benne dispose d'une jauge de niveau dynamique et d'un code couleur pour identifier instantanément les urgences de collecte.",
+                img: "presentation benne.png"
+            },
+            {
+                type: "step",
+                tag: "Étape 02",
+                title: "Modification des Quantités (Clic Benne)",
+                desc: "Un simple clic sur un contenant ouvre la fenêtre modale d'ajustement rapide pour mettre à jour les volumes avec précision.",
+                feature: "Interface intuitive : Glissez le curseur ou saisissez la valeur exacte pour recalculer le pourcentage et valider le nouveau niveau instantanément.",
+                img: "clic benne.png"
+            },
+            {
+                type: "step",
+                tag: "Étape 03",
+                title: "Déplacement par Appui Long",
+                desc: "Besoin de réorganiser l'emplacement des fûts et bennes selon les changements dans l'atelier ?",
+                feature: "Fonctionnalité Glisser-Déposer : Restez appuyé sur un contenant pour l'attraper et le déplacer facilement vers une autre zone du tableau de bord.",
+                img: "reste appuyer.png"
+            },
+            {
+                type: "step",
+                tag: "Étape 04",
+                title: "Rapports et Historique de Remplissage",
+                desc: "Analysez l'évolution des volumes de déchets sur la durée grâce à des graphiques clairs et un historique détaillé.",
+                feature: "Suivi chronologique : Sélectionnez n'importe quel contenant pour observer son historique et supprimer des entrées si nécessaire.",
+                img: "rapport.png"
+            },
+            {
+                type: "step",
+                tag: "Étape 05",
+                title: "Zone Admin — Configuration des Sites & Zones",
+                desc: "L'espace d'administration permet de structurer entièrement l'atelier selon vos besoins opérationnels.",
+                feature: "Gestion complète : Créez de nouvelles zones colorées, ajoutez des bennes, définissez les capacités maximales et paramétrez les seuils d'alerte critique.",
+                img: "zone admin.png"
+            },
+            {
+                type: "step",
+                tag: "Étape 06",
+                title: "Gestion des Comptes & Rôles",
+                desc: "Contrôlez les accès à l'application en attribuant des rôles spécifiques selon les profils utilisateurs.",
+                feature: "Hiérarchie des accès : Rôle Atelier (saisie terrain uniquement), Administrateur de site (configuration et saisie), et Super Admin (accès complet).",
+                img: "gestion des compte.png"
+            },
+            {
+                type: "step",
+                tag: "Étape 07",
+                title: "Version Téléphone (Responsive)",
+                desc: "L'application est entièrement pensée et optimisée pour une utilisation nomade sur smartphone directement depuis l'atelier.",
+                feature: "Mobilité terrain : Retrouvez l'intégralité des fûts et des jauges de remplissage au format mobile pour effectuer les relevés sur le terrain sans contrainte.",
+                img: "Screenshot_20260922_111630_Chrome.jpg"
+            },
+            {
+                type: "final",
+                tag: "Félicitations 🌱",
+                title: "Accès à l'application Waste Tracker",
+                desc: "Vous avez parcouru l'ensemble des fonctionnalités du guide de présentation. L'application est prête à l'emploi !",
+                link: "https://andromedus-studio.github.io/waste-tracker/"
+            }
+        ];
+
+        let currentStep = 0;
+        let slideDirection = 'right';
+
+        function updateStep() {
+            const data = steps[currentStep];
+            document.getElementById('step-indicator').innerText = `Étape ${currentStep + 1} / ${steps.length}`;
+            
+            const contentContainer = document.getElementById('step-content');
+            
+            // Retirer les classes d'animation pour forcer le relancement
+            contentContainer.classList.remove('slide-in-right', 'slide-in-left');
+            void contentContainer.offsetWidth; // Force reflow
+            
+            if (slideDirection === 'right') {
+                contentContainer.classList.add('slide-in-right');
+            } else {
+                contentContainer.classList.add('slide-in-left');
+            }
+
+            if (data.type === "welcome") {
+                contentContainer.innerHTML = `
+                    <div class="welcome-slide">
+                        <span class="welcome-badge">🌿 Guide d'utilisation officiel</span>
+                        <h2>${data.title}</h2>
+                        <p class="description">${data.desc}</p>
+                        <div class="welcome-grid">
+                            ${data.cards.map(card => `
+                                <div class="welcome-card">
+                                    <h4>${card.title}</h4>
+                                    <p>${card.text}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (data.type === "step") {
+                contentContainer.innerHTML = `
+                    <span class="step-tag">${data.tag}</span>
+                    <h2>${data.title}</h2>
+                    <p class="description">${data.desc}</p>
+                    <div class="feature-box">
+                        <strong>Fonctionnalité clé :</strong> ${data.feature}
+                    </div>
+                    <div class="image-container">
+                        <img src="${data.img}" alt="${data.title}">
+                    </div>
+                `;
+            } else {
+                contentContainer.innerHTML = `
+                    <div class="final-slide">
+                        <div class="final-icon">🍃</div>
+                        <span class="step-tag">${data.tag}</span>
+                        <h2>${data.title}</h2>
+                        <p class="description">${data.desc}</p>
+                        
+                        <div class="link-card">
+                            <p style="margin: 0 0 10px 0; color: var(--text-main); font-weight: 600;">Cliquez ci-dessous pour lancer l'application en ligne :</p>
+                            <a href="${data.link}" target="_blank" class="cta-button">
+                                <span>🌐 Ouvrir Waste Tracker</span>
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('prev-btn').disabled = currentStep === 0;
+            const nextBtn = document.getElementById('next-btn');
+            if (currentStep === steps.length - 1) {
+                nextBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'block';
+                nextBtn.innerText = "Suivant";
+            }
+        }
+
+        function changeStep(direction) {
+            slideDirection = direction > 0 ? 'right' : 'left';
+            currentStep += direction;
+            if (currentStep < 0) currentStep = 0;
+            if (currentStep >= steps.length) currentStep = steps.length - 1;
+            updateStep();
+        }
+
+        updateStep();
+    </script>
+</body>
+</html>
